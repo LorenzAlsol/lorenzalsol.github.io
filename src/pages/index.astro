@@ -3,11 +3,12 @@ import { getCollection } from 'astro:content';
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import MaskSprites from '../components/MaskSprites.astro';
-import Stall from '../components/Stall.astro';
+import Stage from '../components/Stage.astro';
 import { site } from '../content/site';
 import { masks } from '../content/masks';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const L = site.work.labels;
 ---
 <Base>
   <MaskSprites />
@@ -21,9 +22,9 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     </nav>
     <div class="nav-tools">
       <button type="button" class="chip" data-mask-chip aria-expanded="false" aria-controls="mask-panel">
-        <svg viewBox="0 0 120 140" aria-hidden="true"><use href="#mask-fox" class="m-fox" data-chip-icon /></svg>
-        <span class="chip-label">Mask: <span data-chip-name>Fox</span></span>
-        <span class="sr-only" data-chip-sr>Choose a mask</span>
+        <svg viewBox="0 0 120 140" aria-hidden="true"><use href="#mask-playful" class="m-playful" data-chip-icon /></svg>
+        <span class="chip-label">Change mask<span class="chip-now"> · <span data-chip-name>Playful</span></span></span>
+        <span class="sr-only" data-chip-sr>Change mask</span>
         <span class="chip-caret" aria-hidden="true"></span>
       </button>
       <button type="button" class="theme-btn" data-theme-btn>
@@ -31,12 +32,12 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
         <span data-theme-label>Light</span>
       </button>
       <div class="chip-panel" id="mask-panel" data-mask-panel hidden>
-        <p>Wear a different mask. The site changes how it looks, moves and reads.</p>
+        <p>Wear a different mask. The same work, presented from a different perspective.</p>
         <fieldset class="panel-masks" style="border:0;margin:0;padding:0;min-width:0">
-          <legend class="sr-only">Choose a mask</legend>
+          <legend class="sr-only">Choose a perspective</legend>
           {masks.map((m) => (
             <label class="panel-opt">
-              <input type="radio" name="mask-nav" value={m.id} checked={m.id === 'fox'} />
+              <input type="radio" name="mask-nav" value={m.id} checked={m.id === 'playful'} />
               <svg viewBox="0 0 120 140" aria-hidden="true"><use href={`#mask-${m.id}`} class={`m-${m.id}`} /></svg>
               <span>{m.name}</span>
             </label>
@@ -47,26 +48,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
   </header>
 
   <main id="main">
-    <section id="top" class="hero" aria-labelledby="hero-title">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="byline">
-            <span>{site.name}</span><i aria-hidden="true"></i><span>{site.hero.role}</span><i aria-hidden="true"></i><span>{site.city}</span>
-          </p>
-          <h1 id="hero-title">
-            {site.hero.headline.map((line, i) => (
-              <span class={`ln${i >= site.hero.headline.length - 2 ? ' ln-em' : ''}`}>{line}</span>
-            ))}
-          </h1>
-          <p class="hero-sub">{site.hero.mechanic}</p>
-          <p class="hero-actions">
-            <a class="btn" href="#work">{site.hero.primary}</a>
-            <a class="btn btn-quiet" href="#mask-picker" data-focus-picker>{site.hero.secondary}</a>
-          </p>
-        </div>
-        <div id="mask-picker"><Stall /></div>
-      </div>
-    </section>
+    <Stage />
 
     <section id="work" class="work" aria-labelledby="work-title">
       <div class="work-inner">
@@ -97,20 +79,35 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
                     <Picture src={p.data.image} alt={p.data.imageAlt ?? ''} formats={['avif', 'webp']} widths={[640, 960, 1280, 1600]} sizes="(max-width: 859px) 100vw, 70vw" loading="lazy" />
                   ) : (
                     <div class="media-slot">
-                      <strong>Screenshot needed</strong>
+                      <strong>Screenshot or demo needed</strong>
                       <span>{p.data.title} · add an image in the project file (about 1600 × 1000)</span>
                     </div>
                   )}
                 </div>
-                <div class="panel-body">
+
+                <div class="case">
                   <h3>{p.data.title}</h3>
                   <p class="summary">{p.data.summary}</p>
-                  <dl class="meta">
-                    <div><dt>Role</dt><dd>{p.data.role}</dd></div>
-                    <div><dt>Stack</dt><dd>{p.data.stack.join(', ')}</dd></div>
-                    <div><dt>Year</dt><dd>{p.data.year}</dd></div>
-                  </dl>
-                  <p class="panel-cta"><a class="btn" href={p.data.link}>{site.work.cta}<span class="sr-only">: {p.data.title}</span></a></p>
+                  <div class="case-grid">
+                    <div class="case-main">
+                      <section><h4>{L.problem}</h4><p>{p.data.problem}</p></section>
+                      <section><h4>{L.users}</h4><p>{p.data.users}</p></section>
+                      <section><h4>{L.contribution}</h4><ul>{p.data.contribution.map((c) => <li>{c}</li>)}</ul></section>
+                      <section><h4>{L.decisions}</h4><ul class="decisions">{p.data.decisions.map((d) => <li><strong>{d.title}</strong> {d.detail}</li>)}</ul></section>
+                    </div>
+                    <aside class="case-side" aria-label={`${p.data.title}: ${L.facts.toLowerCase()} and ${L.links.toLowerCase()}`}>
+                      <dl class="meta">
+                        <div><dt>Role</dt><dd>{p.data.role}</dd></div>
+                        <div><dt>Stack</dt><dd>{p.data.stack.join(', ')}</dd></div>
+                        <div><dt>Year</dt><dd>{p.data.year}</dd></div>
+                      </dl>
+                      <ul class="proj-links">
+                        {p.data.links.map((l, i) => (
+                          <li><a class={i === 0 ? 'btn' : 'text-link'} href={l.href}>{i === 0 ? site.work.cta : l.label}<span class="sr-only">{i === 0 ? ` (${l.label}): ${p.data.title}` : `: ${p.data.title}`}</span></a></li>
+                        ))}
+                      </ul>
+                    </aside>
+                  </div>
                 </div>
               </article>
             ))}
@@ -148,6 +145,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
           <a class="btn btn-quiet" href={site.github}>GitHub</a>
           <a class="btn btn-quiet" href={site.linkedin}>LinkedIn</a>
           <a class="btn btn-quiet" href={site.cv} download>Download CV</a>
+          <a class="btn btn-quiet" href="#mask-picker" data-focus-picker>Try another perspective</a>
         </div>
       </div>
     </section>

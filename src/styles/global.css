@@ -66,6 +66,7 @@ a { color: var(--accent-text); }
 .chip:hover, .theme-btn:hover { transform: translateY(var(--lift)); }
 .chip:active, .theme-btn:active { transform: scale(var(--press)); transition-duration: 90ms; }
 .chip svg { width: 22px; height: 26px; flex: none; }
+.chip-now { color: var(--muted); font-weight: 500; }
 .chip .chip-caret { width: 10px; height: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
 .chip[aria-expanded='true'] .chip-caret { transform: translateY(2px) rotate(225deg); }
 .theme-btn .theme-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
@@ -107,6 +108,7 @@ a { color: var(--accent-text); }
   .slot { max-width: 300px; }
   .facts { grid-template-columns: 1fr; }
   .chip .chip-label { display: none; }
+  .chip { padding: 0 12px; }
 }
 
 /* ---------- Appearance transitions: mask and theme share one reveal ---------- */

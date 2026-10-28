@@ -6,6 +6,27 @@
   ],
   "role": "[Your role]",
   "summary": "[One sentence about this web app.]",
-  "link": "#",
-  "order": 2
+  "order": 2,
+  "problem": "[What problem did this solve? One or two sentences.]",
+  "users": "[Who is it for? Real users or intended users.]",
+  "contribution": [
+    "[What you personally built or led]",
+    "[Another concrete contribution]"
+  ],
+  "decisions": [
+    {
+      "title": "[A decision you made]",
+      "detail": "[Why you made it, and what you traded off.]"
+    }
+  ],
+  "links": [
+    {
+      "label": "Live site",
+      "href": "#"
+    },
+    {
+      "label": "Source code",
+      "href": "#"
+    }
+  ]
 }

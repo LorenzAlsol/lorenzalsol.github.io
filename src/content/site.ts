@@ -20,15 +20,16 @@ export const site = {
     role: 'Web app developer',
     // Deliberate line breaks; each entry is one line of the headline.
     headline: ['I build web apps', 'you can step into,', 'poke at and', 'play with.'],
-    mechanic: 'Four masks, one portfolio. Each mask changes how this site looks, moves and reads.',
+    mechanic: 'Four masks, one portfolio. Each mask is a perspective: the same work, presented differently.',
     primary: 'See the work',
-    secondary: 'Choose a mask',
+    secondary: 'Choose a perspective',
   },
   work: {
     kicker: 'Selected work',
     title: 'Work',
     intro: '[One line about selected work.]',
     cta: 'View project',
+    labels: { problem: 'The problem', users: 'Who it is for', contribution: 'What I did', decisions: 'Key decisions', facts: 'Facts', links: 'Links' },
   },
   about: {
     kicker: 'About',

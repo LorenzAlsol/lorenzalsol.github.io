@@ -6,7 +6,7 @@ import { maskById, maskIds, type MaskId } from '../content/masks';
 
 const root = document.documentElement;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-const stall = document.querySelector<HTMLElement>('[data-stall]');
+const seller = document.querySelector<HTMLElement>('[data-seller]');
 const chip = document.querySelector<HTMLButtonElement>('[data-mask-chip]');
 const panel = document.querySelector<HTMLElement>('[data-mask-panel]');
 const themeBtn = document.querySelector<HTMLButtonElement>('[data-theme-btn]');
@@ -14,7 +14,7 @@ const radios = Array.from(document.querySelectorAll<HTMLInputElement>('input[nam
 const sections = ['top', 'work', 'about', 'contact'].map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
 
 const save = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } };
-const currentMask = () => (root.dataset.mask as MaskId) || 'fox';
+const currentMask = () => (root.dataset.mask as MaskId) || 'playful';
 const currentTheme = () => (root.dataset.theme === 'light' ? 'light' : 'dark');
 
 function paintControls() {
@@ -57,11 +57,12 @@ function reveal(apply: () => void, from: HTMLElement | null, ms: number) {
 
 function setMask(id: MaskId, from: HTMLElement | null) {
   if (id === currentMask() || !maskIds.includes(id)) return;
+  preview();
   reveal(() => { root.dataset.mask = id; save('mask', id); paintControls(); }, from, maskById[id].reveal);
-  if (stall && !reduced.matches) {
-    stall.classList.remove('is-hop');
-    void stall.offsetWidth;
-    stall.classList.add('is-hop');
+  // The seller puts the mask on for a moment, in step with the reveal.
+  if (seller && !reduced.matches) {
+    seller.classList.add('is-wearing');
+    window.setTimeout(() => seller.classList.remove('is-wearing'), 1100);
   }
 }
 
@@ -71,6 +72,22 @@ radios.forEach((r) => r.addEventListener('change', () => {
   setMask(r.value as MaskId, origin);
   if (r.name === 'mask-nav') closePanel();
 }));
+
+/* Preview: hovering (mouse) or keyboard-focusing another mask shows what it would change and has the seller point at it */
+const stageEl = document.querySelector<HTMLElement>('[data-stage]');
+function preview(id?: MaskId) {
+  if (!stageEl) return;
+  if (id && id !== currentMask()) stageEl.dataset.preview = id;
+  else delete stageEl.dataset.preview;
+}
+document.querySelectorAll<HTMLElement>('.mask-opt').forEach((el) => {
+  const input = el.querySelector('input');
+  const id = input?.value as MaskId;
+  el.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') preview(id); });
+  el.addEventListener('pointerleave', () => preview());
+  el.addEventListener('focusin', () => { if (input?.matches(':focus-visible')) preview(id); });
+  el.addEventListener('focusout', () => preview());
+});
 
 themeBtn?.addEventListener('click', () => {
   const next = currentTheme() === 'dark' ? 'light' : 'dark';
@@ -94,10 +111,10 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* "Choose a mask": scroll to the stall and put focus on the picker so arrow keys work */
-document.querySelector('[data-focus-picker]')?.addEventListener('click', (e) => {
+document.querySelectorAll('[data-focus-picker]').forEach((el) => el.addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('mask-picker')?.scrollIntoView({ behavior: reduced.matches ? 'auto' : 'smooth', block: 'center' });
   document.querySelector<HTMLInputElement>('input[name="mask"]:checked')?.focus({ preventScroll: true });
-});
+}));
 
 paintControls();

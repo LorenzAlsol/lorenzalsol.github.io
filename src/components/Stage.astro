@@ -1,0 +1,150 @@
+---
+// The hero: a mask seller's stall that fills the viewport. The headline is the stall's sign,
+// the seller stands under it, and four large masks hang on the rack. Each perspective's name
+// is set in its own typography on its tag, so you can see the character before you choose.
+// The rack is a native radio group: one tab stop, arrow keys, and tap works without hover.
+//
+// ARTWORK SLOTS (all flat SVG, no external assets):
+//   - seller: the <svg class="seller"> below. Keep the .arm-hold / .arm-present / .arm-idle
+//     pose groups and the .held masks; replace the shapes with final art.
+//   - masks: MaskSprites.astro. Creatures are PROVISIONAL; ids and copy never name them.
+//   - backdrops: the .bd-* groups, one per perspective.
+import { masks } from '../content/masks';
+import { site } from '../content/site';
+
+const h = site.hero;
+
+// Deterministic pines for the calm backdrop.
+let s = 5;
+const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+const pines = Array.from({ length: 36 }, (_, i) => {
+  const ht = 90 + rnd() * 120, w = 56 + rnd() * 24, x = i * 46 - 12;
+  return `M${x} 700 L${x + w / 2} ${700 - ht} L${x + w} 700 Z`;
+}).join(' ');
+---
+<section id="top" class="stage" aria-labelledby="hero-title" data-stage>
+  <svg class="backdrop" aria-hidden="true" focusable="false" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+    <rect class="sky" width="1600" height="900" />
+    <g class="bd bd-playful">
+      <circle class="sun" cx="1190" cy="690" r="132" />
+      <path class="far" d="M0 640 Q400 500 800 620 T1600 600 V900 H0 Z" />
+      <path class="near" d="M0 740 Q500 620 1000 720 T1600 700 V900 H0 Z" />
+      <path class="conf" d="M120 560 l18 -30 l18 30 z M560 640 l16 -26 l16 26 z M700 520 l14 -24 l14 24 z M60 700 l16 -26 l16 26 z" />
+    </g>
+    <g class="bd bd-cinematic">
+      <circle class="ring" cx="1190" cy="690" r="112" />
+      <path class="far" d="M0 700 L260 440 L420 580 L640 380 L900 620 L1120 420 L1380 600 L1600 500 V900 H0 Z" />
+      <path class="near" d="M0 780 L320 560 L520 680 L820 540 L1120 700 L1400 600 L1600 680 V900 H0 Z" />
+      <rect class="conf" x="120" y="590" width="300" height="14" rx="7" />
+      <rect class="conf" x="200" y="632" width="200" height="14" rx="7" />
+    </g>
+    <g class="bd bd-focused">
+      <circle class="sun" cx="1190" cy="670" r="100" />
+      <circle class="sky" cx="1226" cy="648" r="88" />
+      <path class="far" d="M0 640 Q800 520 1600 640 V900 H0 Z" />
+      <path class="near" d="M0 740 Q800 640 1600 740 V900 H0 Z" />
+      <path class="conf" d="M160 340 L320 280 L480 380 L620 300" style="fill:none;stroke:var(--accent2);stroke-width:3" />
+      <circle class="starp" cx="160" cy="340" r="6" /><circle class="starp" cx="320" cy="280" r="6" />
+      <circle class="starp" cx="480" cy="380" r="6" /><circle class="starp" cx="620" cy="300" r="6" />
+      <circle class="starp" cx="900" cy="210" r="4" /><circle class="starp" cx="780" cy="360" r="4" />
+    </g>
+    <g class="bd bd-calm">
+      <circle class="sun" cx="1190" cy="690" r="118" />
+      <path class="far" d={pines} />
+      <rect class="mist" x="0" y="560" width="1600" height="90" />
+      <rect class="mist" x="0" y="660" width="1600" height="120" />
+      <path class="near" d="M0 780 Q800 720 1600 780 V900 H0 Z" />
+    </g>
+  </svg>
+
+  <svg class="awning" aria-hidden="true" focusable="false" width="100%" height="124">
+    <defs>
+      <pattern id="awn" width="160" height="124" patternUnits="userSpaceOnUse">
+        <rect class="awn-a" x="0" y="-4" width="80" height="84" /><circle class="awn-a" cx="40" cy="80" r="40" />
+        <rect class="awn-b" x="80" y="-4" width="80" height="84" /><circle class="awn-b" cx="120" cy="80" r="40" />
+        <path class="awn-line" d="M0 -4 V80 M80 -4 V80 M160 -4 V80" />
+        <path class="awn-line" d="M0 80 A40 40 0 0 0 80 80 A40 40 0 0 0 160 80" />
+      </pattern>
+    </defs>
+    <rect width="100%" height="124" fill="url(#awn)" />
+  </svg>
+  <div class="post post-l" aria-hidden="true"></div>
+  <div class="post post-r" aria-hidden="true"></div>
+
+  <div class="stage-grid">
+    <div class="sign">
+      <p class="byline">
+        <span>{site.name}</span><i aria-hidden="true"></i><span>{h.role}</span><i aria-hidden="true"></i><span>{site.city}</span>
+      </p>
+      <h1 id="hero-title">
+        {h.headline.map((line, i) => (
+          <span class={`ln${i >= h.headline.length - 2 ? ' ln-em' : ''}`}>{line}</span>
+        ))}
+      </h1>
+      <p class="hero-sub">{h.mechanic}</p>
+      <p class="hero-actions">
+        <a class="btn" href="#work">{h.primary}</a>
+        <a class="btn btn-quiet" href="#mask-picker" data-focus-picker>{h.secondary}</a>
+      </p>
+    </div>
+
+    <div class="stage-right">
+    <fieldset class="rack" id="mask-picker" data-picker>
+      <legend class="sr-only">Choose a perspective: the same portfolio, presented differently</legend>
+      {masks.map((m) => (
+        <label class={`mask-opt mo-${m.id}`}>
+          <input type="radio" name="mask" value={m.id} checked={m.id === 'playful'} />
+          <span class="mask-art" aria-hidden="true">
+            <svg viewBox="0 0 120 140"><use href={`#mask-${m.id}`} class={`m-${m.id}`} /></svg>
+          </span>
+          <span class="mask-tag" data-mask={m.id}><span class="mask-name">{m.name}</span></span>
+          <span class="mask-worn" aria-hidden="true">Wearing</span>
+        </label>
+      ))}
+      <p class="caption" aria-live="polite">
+        {masks.map((m) => (
+          <span class={`cap cap-cur cap-cur-${m.id}`}><strong>Wearing {m.name}.</strong> {m.change}</span>
+        ))}
+        {masks.map((m) => (
+          <span class={`cap cap-prev cap-prev-${m.id}`} aria-hidden="true"><strong>Try {m.name}:</strong> {m.change}</span>
+        ))}
+      </p>
+    </fieldset>
+
+    <div class="seller-wrap" data-seller>
+      <svg class="seller" viewBox="126 366 350 300" role="img" aria-label="The mask seller, a man in a wide hat, holding up a mask.">
+        <path class="coat" d="M150 650 L158 566 Q230 534 302 566 L310 650 Z" />
+        <path class="vest" d="M200 556 L260 556 L272 650 L188 650 Z" />
+        <circle class="skin" cx="176" cy="488" r="11" /><circle class="skin" cx="284" cy="488" r="11" />
+        <circle class="skin" cx="230" cy="484" r="52" />
+        <path class="hair" d="M200 508 Q214 496 230 505 Q246 496 260 508 Q246 522 230 514 Q214 522 200 508 Z" />
+        <circle class="eye" cx="212" cy="480" r="5.5" /><circle class="eye" cx="248" cy="480" r="5.5" />
+        <path class="brow" d="M202 466 L222 462 M238 462 L258 466" />
+        <path class="mouth" d="M219 525 Q230 532 241 525" />
+        <ellipse class="hat" cx="230" cy="448" rx="82" ry="14" />
+        <path class="hat" d="M178 448 Q180 388 230 384 Q280 388 282 448 Z" />
+        <path class="band" d="M180 436 Q230 450 280 436 L281 446 Q230 460 179 446 Z" />
+        <path class="arm-out" d="M168 572 L134 612" /><path class="arm-in" d="M168 572 L134 612" />
+        <circle class="hand" cx="150" cy="612" r="16" />
+        <g class="arm arm-hold">
+          <path class="arm-out" d="M294 572 L348 524 L334 452" /><path class="arm-in" d="M294 572 L348 524 L334 452" />
+          {masks.map((m) => (
+            <use href={`#mask-${m.id}`} class={`held m-${m.id} held-${m.id}`} x="286" y="378" width="92" height="107" />
+          ))}
+          <circle class="hand" cx="334" cy="452" r="17" />
+        </g>
+        <g class="arm arm-present">
+          <path class="arm-out" d="M294 572 L354 544 L436 400" /><path class="arm-in" d="M294 572 L354 544 L436 400" />
+          <circle class="hand" cx="438" cy="392" r="17" />
+        </g>
+        <g class="arm arm-idle">
+          <path class="arm-out" d="M294 572 L330 610 L320 616" /><path class="arm-in" d="M294 572 L330 610 L320 616" />
+          <circle class="hand" cx="318" cy="614" r="16" />
+        </g>
+      </svg>
+    </div>
+    </div>
+  </div>
+
+  <div class="counter" aria-hidden="true"></div>
+</section>

@@ -13,7 +13,11 @@ const projects = defineCollection({
     // Optional on purpose: a missing screenshot shows a labelled slot, never a fake one.
     image: image().optional(),
     imageAlt: z.string().optional(),
-    link: z.string(),
+    problem: z.string(),
+    users: z.string(),
+    contribution: z.array(z.string()),
+    decisions: z.array(z.object({ title: z.string(), detail: z.string() })),
+    links: z.array(z.object({ label: z.string(), href: z.string() })),
     order: z.number(),
   }),
 });

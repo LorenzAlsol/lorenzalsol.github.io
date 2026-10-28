@@ -1,159 +1,201 @@
-/* ---------- Mask fills (the three colours each mask is drawn with) ---------- */
-.m-fox { --ma: #ff7a45; --mb: #ffc857; --mc: #fff0e6; }
-.m-dragon { --ma: #ff4b33; --mb: #2ed3a1; --mc: #f4f1e8; }
-.m-owl { --ma: #f2b138; --mb: #6b7bea; --mc: #fff6e0; }
-.m-stag { --ma: #9cc9a8; --mb: #6e9d80; --mc: #e8dcc0; }
+/* ---------- Mask fills (three flat colours each; creatures are provisional art) ---------- */
+.m-playful { --ma: #ff7a45; --mb: #ffc857; --mc: #fff0e6; }
+.m-cinematic { --ma: #ff4b33; --mb: #2ed3a1; --mc: #f4f1e8; }
+.m-focused { --ma: #f2b138; --mb: #6b7bea; --mc: #fff6e0; }
+.m-calm { --ma: #9cc9a8; --mb: #6e9d80; --mc: #e8dcc0; }
 
-/* ---------- Hero layout ---------- */
-.hero { position: relative; overflow-x: clip; padding: clamp(28px, 4vw, 56px) var(--gutter) clamp(64px, 8vw, 112px); }
-.hero-grid {
-  display: grid; grid-template-columns: var(--hero-cols); gap: var(--hero-gap); align-items: center;
-  max-width: 1360px; margin-inline: auto; min-height: calc(100svh - var(--nav-h) - 96px);
+/* ---------- The stage: one scene that fills the viewport ---------- */
+.stage {
+  --counter-h: clamp(60px, 6.8vw, 96px);
+  --wood: color-mix(in srgb, var(--accent2) 42%, #3a2418);
+  position: relative; isolation: isolate; overflow-x: clip; display: flex; flex-direction: column;
+  min-height: calc(100svh - var(--nav-h)); padding: 130px var(--gutter) 0;
 }
-.byline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 0 0 22px; font: 600 14px/1.3 var(--font-text); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-text); }
+.stage-grid {
+  position: relative; z-index: 2; flex: 1; width: 100%; max-width: 1360px; margin-inline: auto;
+  display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); grid-template-rows: auto 1fr;
+  column-gap: var(--hero-gap); padding-bottom: var(--counter-h);
+}
+
+.backdrop { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; }
+.backdrop .sky { fill: var(--scene-sky); }
+.backdrop .far { fill: var(--scene-far); }
+.backdrop .near { fill: var(--scene-near); }
+.backdrop .sun, .backdrop .conf, .backdrop .starp { fill: var(--accent2); }
+.backdrop .ring { fill: none; stroke: var(--accent); stroke-width: 16; }
+.backdrop .mist { fill: var(--bg); opacity: 0.3; }
+.backdrop .bd { display: none; }
+html[data-mask='playful'] .bd-playful, html[data-mask='cinematic'] .bd-cinematic,
+html[data-mask='focused'] .bd-focused, html[data-mask='calm'] .bd-calm { display: inline; }
+
+.awning { position: absolute; z-index: 6; top: 0; left: 0; display: block; max-width: none; }
+.awn-a { fill: var(--accent); } .awn-b { fill: var(--accent2); }
+.awn-line { fill: none; stroke: var(--line); stroke-width: 5; stroke-linejoin: round; }
+.post { position: absolute; z-index: 1; top: 100px; bottom: 0; width: clamp(14px, 1.6vw, 24px); background: var(--wood); border-inline: 3px solid var(--line); }
+.post-l { left: calc(var(--gutter) * 0.3); }
+.post-r { right: calc(var(--gutter) * 0.3); }
+
+/* The headline is the stall's sign */
+.sign {
+  position: relative; z-index: 5; grid-column: 1; grid-row: 1; align-self: start; margin-top: 32px;
+  padding: clamp(20px, 2.4vw, 34px); background: var(--surface); color: var(--ink);
+  border: 3px solid var(--line); border-radius: 20px; box-shadow: 0 8px 0 var(--line);
+}
+.sign::before, .sign::after { content: ''; position: absolute; top: -34px; width: 4px; height: 34px; background: var(--line); }
+.sign::before { left: 14%; } .sign::after { right: 14%; }
+.byline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 0 0 16px; font: 600 14px/1.3 var(--font-text); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-text); }
 .byline i { width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); }
-.hero h1 { font-size: var(--h1-size); margin-bottom: 26px; }
-.hero h1 .ln { display: block; }
-.hero-sub { max-width: 44ch; margin-bottom: 28px; font-size: calc(var(--text-size) + 1px); color: var(--muted); }
+.sign h1 { font-size: var(--h1-size); margin-bottom: 20px; }
+.sign h1 .ln { display: block; }
+.hero-sub { max-width: 44ch; margin-bottom: 22px; color: var(--muted); font-size: calc(var(--text-size) + 1px); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin: 0; }
 
-/* ---------- The stall ---------- */
-.stall { position: relative; min-width: 0; }
-.stall-frame { position: relative; border-radius: 30px; box-shadow: 0 10px 0 var(--line); }
-.scene { display: block; width: 100%; height: auto; overflow: visible; }
-
-.scene .sky { fill: var(--scene-sky); }
-.scene .far { fill: var(--scene-far); }
-.scene .near { fill: var(--scene-near); }
-.scene .sun, .scene .conf, .scene .starp { fill: var(--accent2); }
-.scene .ring { fill: none; stroke: var(--accent); stroke-width: 14; }
-.scene .mist { fill: var(--bg); opacity: 0.32; }
-.scene .bd { display: none; }
-html[data-mask='fox'] .bd-fox, html[data-mask='dragon'] .bd-dragon, html[data-mask='owl'] .bd-owl, html[data-mask='stag'] .bd-stag { display: inline; }
-
-.scene .wood { fill: color-mix(in srgb, var(--accent2) 42%, #3a2418); stroke: var(--line); stroke-width: 5; }
-.scene .hook { stroke: var(--line); stroke-width: 4; fill: none; }
-.scene .awn-a rect, .scene .awn-a circle { fill: var(--accent); stroke: var(--line); stroke-width: 5; }
-.scene .awn-b rect, .scene .awn-b circle { fill: var(--accent2); stroke: var(--line); stroke-width: 5; }
-.scene .coat { fill: var(--accent2); }
-.scene .vest, .scene .hat { fill: var(--accent); }
-.scene .band { fill: var(--accent2); stroke-width: 3; }
-.scene .skin, .scene .hand { fill: var(--skin); }
-.scene .hair { fill: var(--hair); stroke-width: 3; }
-.scene .coat, .scene .vest, .scene .skin, .scene .hat, .scene .band, .scene .hair, .scene .hand { stroke: var(--line); stroke-width: 5; stroke-linejoin: round; }
-.scene .hair, .scene .band { stroke-width: 3; }
-.scene .eye { fill: var(--line); }
-.scene .brow { fill: none; stroke: var(--hair); stroke-width: 5; stroke-linecap: round; }
-.scene .mouth { fill: none; stroke: var(--line); stroke-width: 4; stroke-linecap: round; }
-.scene .arm-out { fill: none; stroke: var(--line); stroke-width: 36; stroke-linecap: round; stroke-linejoin: round; }
-.scene .arm-in { fill: none; stroke: var(--accent2); stroke-width: 27; stroke-linecap: round; stroke-linejoin: round; }
-.scene .counter { fill: var(--surface); stroke: var(--line); stroke-width: 5; }
-.scene .counter-top { fill: var(--accent2); stroke: var(--line); stroke-width: 5; }
-.scene .plank { stroke: var(--line); stroke-width: 3; opacity: 0.22; }
-.scene .frame-line { fill: none; stroke: var(--line); stroke-width: 6; }
-
-/* Seller poses: he holds the mask you are wearing, and points when you preview another */
-.scene .arm { display: none; }
-.scene .arm-hold { display: inline; }
-.scene .held { display: none; }
-html[data-mask='fox'] .held-fox, html[data-mask='dragon'] .held-dragon, html[data-mask='owl'] .held-owl, html[data-mask='stag'] .held-stag { display: inline; }
-.stall:has(.mask-opt:not(:has(input:checked)):hover) .arm-hold,
-.stall:has(.mask-opt:not(:has(input:checked)):has(input:focus-visible)) .arm-hold { display: none; }
-.stall:has(.mask-opt:not(:has(input:checked)):hover) .arm-present,
-.stall:has(.mask-opt:not(:has(input:checked)):has(input:focus-visible)) .arm-present { display: inline; }
-
-/* The rack: the mask in the seller's hand is dimmed on its hook; others lift when previewed */
-.scene .ghost { display: none; fill: none; stroke: var(--line); stroke-width: 4; stroke-dasharray: 7 9; opacity: 0.7; }
-.scene .rack-mask use { transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
-html[data-mask='fox'] .rm-fox, html[data-mask='dragon'] .rm-dragon, html[data-mask='owl'] .rm-owl, html[data-mask='stag'] .rm-stag { opacity: 0.4; }
-html[data-mask='fox'] .rm-fox .ghost, html[data-mask='dragon'] .rm-dragon .ghost, html[data-mask='owl'] .rm-owl .ghost, html[data-mask='stag'] .rm-stag .ghost { display: inline; }
-.stall:has(.mo-fox:hover) .rm-fox use, .stall:has(.mo-fox input:focus-visible) .rm-fox use,
-.stall:has(.mo-dragon:hover) .rm-dragon use, .stall:has(.mo-dragon input:focus-visible) .rm-dragon use,
-.stall:has(.mo-owl:hover) .rm-owl use, .stall:has(.mo-owl input:focus-visible) .rm-owl use,
-.stall:has(.mo-stag:hover) .rm-stag use, .stall:has(.mo-stag input:focus-visible) .rm-stag use { transform: translateY(var(--lift, -6px)) scale(1.04); transform-box: fill-box; transform-origin: 50% 0; }
-
-/* ---------- The picker: native radios laid over the drawing ---------- */
-.picker { position: absolute; inset: 0; min-width: 0; margin: 0; padding: 0; border: 0; pointer-events: none; }
-.mask-opt { position: absolute; left: calc(var(--cx) - 6.5%); top: 34%; width: 13%; height: 34%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; pointer-events: auto; cursor: pointer; border-radius: 16px; }
+/* The rack: four masks, each tag set in its own perspective's type and palette */
+.stage-right { grid-column: 2; grid-row: 1 / span 2; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 14px; }
+.rack {
+  position: relative; z-index: 5; width: 100%; min-width: 0; margin: 14px 0 0; padding: 36px 0 0; border: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1.4vw, 20px); align-content: start;
+}
+.rack::before { content: ''; position: absolute; left: -2%; right: -2%; top: 8px; height: 18px; background: var(--wood); border: 3px solid var(--line); border-radius: 8px; }
+.mask-opt { position: relative; display: grid; justify-items: center; align-content: start; gap: 12px; padding-top: 30px; cursor: pointer; border-radius: 16px; }
+.mask-opt::before { content: ''; position: absolute; top: 0; left: 50%; width: 3px; height: 34px; background: var(--line); transform: translateX(-50%); }
 .mask-opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
-.mask-chip { display: grid; justify-items: center; gap: 1px; padding: 6px 12px; color: var(--ink); background: var(--surface); border: 2px solid var(--line); border-radius: 12px; box-shadow: 0 3px 0 var(--line); transition: transform var(--dur) var(--ease), background-color 160ms, box-shadow var(--dur) var(--ease); }
-.mask-name { font: 700 15px/1.1 var(--font-text); }
-.mask-mood { font: 500 12px/1.2 var(--font-text); color: var(--muted); }
-.mask-opt:hover .mask-chip { transform: translateY(var(--lift)); box-shadow: 0 calc(3px - var(--lift)) 0 var(--line); }
-.mask-opt:active .mask-chip { transform: scale(var(--press)); transition-duration: 90ms; }
-.mask-opt:has(input:checked) .mask-chip { background: var(--accent); color: var(--accent-ink); }
-.mask-opt:has(input:checked) .mask-mood { color: inherit; opacity: 0.85; }
-.mask-opt:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 6px var(--bg); }
-.mask-worn { display: none; position: absolute; top: 0; padding: 2px 8px; font: 700 11px/1.4 var(--font-text); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); border: 2px solid var(--line); border-radius: 999px; }
+.mask-art { display: block; width: 100%; max-width: 168px; transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+.mask-art svg { display: block; width: 100%; height: auto; }
+.mask-opt:hover .mask-art { transform: translateY(var(--lift)) scale(1.05); }
+.mask-opt:active .mask-art { transform: scale(var(--press)); transition-duration: 90ms; }
+.mask-opt:has(input:checked) .mask-art { opacity: 0.34; }
+.mask-opt:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 4px; box-shadow: 0 0 0 7px var(--bg); }
+
+/* Specimen tag: the perspective's name in its own type, colours and weight (tokens are scoped by data-mask) */
+.mask-tag {
+  display: inline-flex; align-items: center; justify-content: center; max-width: 100%; padding: 9px 12px; background: var(--bg); color: var(--ink);
+  font-family: var(--font-display); font-weight: var(--d-wght); font-variation-settings: 'SOFT' var(--d-soft); letter-spacing: var(--d-track);
+  text-transform: var(--d-case); line-height: 1; font-size: clamp(11px, 1.4vw, 19px);
+  border: 2px solid var(--line); border-radius: 12px; box-shadow: 0 3px 0 var(--line), inset 0 -4px 0 var(--accent);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.mask-opt:hover .mask-tag { transform: translateY(var(--lift)); }
+.mask-opt:has(input:checked) .mask-tag { box-shadow: 0 0 0 3px var(--ink), 0 6px 0 3px var(--line), inset 0 -4px 0 var(--accent); }
+.mask-worn { display: none; position: absolute; top: -2px; left: 50%; translate: -50% 0; padding: 2px 8px; font: 700 11px/1.4 var(--font-text); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); border: 2px solid var(--line); border-radius: 999px; white-space: nowrap; z-index: 2; }
 .mask-opt:has(input:checked) .mask-worn { display: block; }
 
-.caption { min-height: 3.4em; margin: 36px 0 0; font-size: 15px; color: var(--muted); }
+.caption { grid-column: 1 / -1; min-height: 3.2em; margin: 18px 0 0; padding: 10px 14px; font-size: 15px; color: var(--ink); background: color-mix(in srgb, var(--surface) 88%, transparent); border: 2px solid var(--rule); border-radius: 12px; }
 .caption .cap { display: none; }
-.caption strong { color: var(--ink); }
-html[data-mask='fox'] .cap-cur-fox, html[data-mask='dragon'] .cap-cur-dragon, html[data-mask='owl'] .cap-cur-owl, html[data-mask='stag'] .cap-cur-stag { display: inline; }
-.stall:has(.mask-opt:not(:has(input:checked)):hover) .cap-cur,
-.stall:has(.mask-opt:not(:has(input:checked)):has(input:focus-visible)) .cap-cur { display: none !important; }
-.stall:has(.mo-fox:not(:has(input:checked)):hover) .cap-prev-fox, .stall:has(.mo-fox:not(:has(input:checked)):has(input:focus-visible)) .cap-prev-fox,
-.stall:has(.mo-dragon:not(:has(input:checked)):hover) .cap-prev-dragon, .stall:has(.mo-dragon:not(:has(input:checked)):has(input:focus-visible)) .cap-prev-dragon,
-.stall:has(.mo-owl:not(:has(input:checked)):hover) .cap-prev-owl, .stall:has(.mo-owl:not(:has(input:checked)):has(input:focus-visible)) .cap-prev-owl,
-.stall:has(.mo-stag:not(:has(input:checked)):hover) .cap-prev-stag, .stall:has(.mo-stag:not(:has(input:checked)):has(input:focus-visible)) .cap-prev-stag { display: inline; }
+.caption strong { color: var(--accent-text); }
+html[data-mask='playful'] .cap-cur-playful, html[data-mask='cinematic'] .cap-cur-cinematic,
+html[data-mask='focused'] .cap-cur-focused, html[data-mask='calm'] .cap-cur-calm { display: inline; }
+/* Preview: [data-preview] is set by appearance.ts on hover (mouse) or keyboard focus of another perspective */
+.stage[data-preview] .cap-cur { display: none !important; }
+.stage[data-preview='playful'] .cap-prev-playful, .stage[data-preview='cinematic'] .cap-prev-cinematic,
+.stage[data-preview='focused'] .cap-prev-focused, .stage[data-preview='calm'] .cap-prev-calm { display: inline; }
 
-/* ---------- Compact stall: the rack stays the control; chips lose the mood line ---------- */
-@media (max-width: 1179px) {
-  .mask-mood { display: none; }
-  .mask-chip { padding: 4px 8px; }
-  .mask-name { font-size: 13px; }
-  .caption { margin-top: 28px; }
+/* The seller stands behind the counter, under his sign */
+.seller-wrap {
+  --seller-w: clamp(170px, 17vw, 250px);
+  position: relative; z-index: 3; flex: none; width: var(--seller-w);
+  margin: 0 0 calc(var(--seller-w) * -0.117);
 }
-@media (max-width: 559px) {
-  .mask-chip { padding: 3px 5px; border-radius: 10px; box-shadow: 0 2px 0 var(--line); }
-  .mask-name { font-size: 12px; }
-  .mask-worn { font-size: 10px; padding: 1px 6px; }
-  .stall-frame { box-shadow: 0 7px 0 var(--line); }
-}
+.seller { display: block; width: 100%; height: auto; overflow: visible; }
+.seller .coat { fill: var(--accent2); }
+.seller .vest, .seller .hat { fill: var(--accent); }
+.seller .band { fill: var(--accent2); }
+.seller .skin, .seller .hand { fill: var(--skin); }
+.seller .hair { fill: var(--hair); }
+.seller .coat, .seller .vest, .seller .skin, .seller .hat, .seller .band, .seller .hair, .seller .hand { stroke: var(--line); stroke-width: 5; stroke-linejoin: round; }
+.seller .hair, .seller .band { stroke-width: 3; }
+.seller .eye { fill: var(--line); }
+.seller .brow { fill: none; stroke: var(--hair); stroke-width: 5; stroke-linecap: round; }
+.seller .mouth { fill: none; stroke: var(--line); stroke-width: 4; stroke-linecap: round; }
+.seller .arm-out { fill: none; stroke: var(--line); stroke-width: 36; stroke-linecap: round; stroke-linejoin: round; }
+.seller .arm-in { fill: none; stroke: var(--accent2); stroke-width: 27; stroke-linecap: round; stroke-linejoin: round; }
 
-/* ---------- Layout: one column below 860px; copy leads, stall follows ---------- */
-@media (max-width: 859px) {
-  .hero { padding-top: 18px; }
-  .hero-grid { grid-template-columns: 1fr; min-height: 0; gap: 22px; }
-  .hero h1 { margin-bottom: 14px; }
-  .hero-sub { margin-bottom: 18px; font-size: var(--text-size); }
+.counter {
+  position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; height: var(--counter-h);
+  background: var(--surface) repeating-linear-gradient(90deg, transparent 0 calc(16.66% - 2px), color-mix(in srgb, var(--line) 22%, transparent) calc(16.66% - 2px) 16.66%);
 }
+.counter::before { content: ''; position: absolute; left: -1%; right: -1%; top: -20px; height: 30px; background: var(--accent2); border: 3px solid var(--line); border-radius: 10px; }
 
-/* ---------- Per-mask composition and decoration ---------- */
-/* fox: sticker tilt and a wavy underline on the last line */
-html[data-mask='fox'] .ln-em { text-decoration: underline wavy var(--accent2); text-decoration-thickness: 0.06em; text-underline-offset: 0.14em; }
-html[data-mask='fox'] .mask-opt:nth-child(odd) .mask-chip { rotate: var(--tilt); }
-html[data-mask='fox'] .mask-opt:nth-child(even) .mask-chip { rotate: calc(var(--tilt) * -0.7); }
-/* dragon: poster headline, the stall bleeds off the right edge, letterbox bars */
-html[data-mask='dragon'] .ln-em { color: var(--accent-text); }
-html[data-mask='dragon'] .hero::before, html[data-mask='dragon'] .hero::after { content: ''; position: absolute; left: 0; right: 0; height: clamp(8px, 1.6vw, 22px); background: var(--line); }
-html[data-mask='dragon'] .hero::before { top: 0; }
-html[data-mask='dragon'] .hero::after { bottom: 0; }
-@media (min-width: 860px) {
-  html[data-mask='dragon'] .stall { margin-right: calc(var(--gutter) * -1); }
-  html[data-mask='dragon'] .stall-frame { border-top-right-radius: 0; border-bottom-right-radius: 0; }
-}
-/* owl: ruled byline, tighter rhythm, quieter shadows */
-html[data-mask='owl'] .byline { padding-top: 14px; border-top: 2px solid var(--rule); }
-html[data-mask='owl'] .ln-em { color: var(--accent-text); }
-html[data-mask='owl'] .hero h1 { margin-bottom: 22px; }
-html[data-mask='owl'] .stall-frame { box-shadow: 0 6px 0 var(--line); }
-/* stag: breathing room, a soft mist along the horizon */
-html[data-mask='stag'] .ln-em { opacity: 0.72; }
-html[data-mask='stag'] .hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 40%; pointer-events: none; background: linear-gradient(to top, color-mix(in srgb, var(--accent) 12%, transparent), transparent); }
-html[data-mask='stag'] .scene { filter: saturate(0.82); }
+/* Poses: he holds the perspective you wear, points at the one you preview, and puts it on when you choose */
+.seller .arm { display: none; }
+.seller .arm-hold { display: inline; }
+.seller .held { display: none; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 320ms var(--ease); }
+html[data-mask='playful'] .held-playful, html[data-mask='cinematic'] .held-cinematic,
+html[data-mask='focused'] .held-focused, html[data-mask='calm'] .held-calm { display: inline; }
+.stage[data-preview] .arm-hold { display: none; }
+.stage[data-preview] .arm-present { display: inline; }
+.seller-wrap.is-wearing .held { transform: translate(-102px, 53px) scale(1.45); }
+
+/* ---------- Per-perspective composition and decoration ---------- */
+html[data-mask='playful'] .ln-em { text-decoration: underline wavy var(--accent2); text-decoration-thickness: 0.06em; text-underline-offset: 0.14em; }
+html[data-mask='playful'] .sign { rotate: -1deg; }
+html[data-mask='playful'] .mask-opt:nth-child(odd) .mask-tag { rotate: -2deg; }
+html[data-mask='playful'] .mask-opt:nth-child(even) .mask-tag { rotate: 1.6deg; }
+html[data-mask='playful'] .seller-wrap { --seller-w: clamp(180px, 19vw, 280px); }
+
+html[data-mask='cinematic'] .ln-em { color: var(--accent-text); }
+html[data-mask='cinematic'] .sign { border-radius: 4px; box-shadow: 10px 10px 0 var(--accent); }
+html[data-mask='cinematic'] .stage-grid { column-gap: clamp(20px, 3vw, 48px); }
+html[data-mask='cinematic'] .backdrop { filter: contrast(1.12) saturate(1.08); }
+html[data-mask='cinematic'] .stage::after { content: ''; position: absolute; z-index: 7; left: 0; right: 0; bottom: 0; height: clamp(8px, 1.4vw, 18px); background: var(--line); }
+html[data-mask='cinematic'] .mask-art { max-width: 184px; }
+
+html[data-mask='focused'] .sign { border-radius: 10px; box-shadow: 0 5px 0 var(--line); display: flex; flex-direction: column; }
+html[data-mask='focused'] .byline { padding-top: 12px; border-top: 2px solid var(--rule); order: 2; margin: 14px 0 0; }
+html[data-mask='focused'] .sign h1 { order: 1; }
+html[data-mask='focused'] .hero-sub { order: 3; margin-top: 14px; }
+html[data-mask='focused'] .hero-actions { order: 4; }
+html[data-mask='focused'] .ln-em { color: var(--accent-text); }
+html[data-mask='focused'] .seller-wrap { --seller-w: clamp(160px, 15vw, 220px); }
+
+html[data-mask='calm'] .sign { background: transparent; border-color: transparent; box-shadow: none; padding-inline: 0; }
+html[data-mask='calm'] .sign::before, html[data-mask='calm'] .sign::after { display: none; }
+html[data-mask='calm'] .ln-em { opacity: 0.74; }
+html[data-mask='calm'] .backdrop { filter: saturate(0.82); }
+html[data-mask='calm'] .stage::before { content: ''; position: absolute; z-index: 0; left: 0; right: 0; bottom: 0; height: 45%; pointer-events: none; background: linear-gradient(to top, color-mix(in srgb, var(--accent) 14%, transparent), transparent); }
+html[data-mask='calm'] .stage { padding-top: 150px; }
+html[data-mask='calm'] .seller-wrap { --seller-w: clamp(160px, 15vw, 220px); }
 
 /* ---------- Arrival: transforms only, so text is visible from the first paint ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .hero h1, .byline { animation: rise 560ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .hero-sub, .hero-actions { animation: rise 600ms cubic-bezier(0.2, 0.7, 0.2, 1) 120ms both; --rise: 14px; }
-  .stall-frame { animation: rise 680ms cubic-bezier(0.2, 0.7, 0.2, 1) 160ms both; --rise: 26px; }
-  .rack-mask use { animation: drop 360ms cubic-bezier(0.3, 0.8, 0.3, 1) both; }
-  .rm-fox use { animation-delay: 380ms; } .rm-dragon use { animation-delay: 420ms; }
-  .rm-owl use { animation-delay: 460ms; } .rm-stag use { animation-delay: 500ms; }
-  .stall.is-hop .seller { animation: hop 440ms var(--ease); }
+  .sign { animation: rise 560ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .seller-wrap { animation: peek 640ms cubic-bezier(0.2, 0.7, 0.2, 1) 140ms both; }
+  .mask-art { animation: drop 380ms cubic-bezier(0.3, 0.8, 0.3, 1) 320ms both; }
+  .mask-opt:nth-child(2) .mask-art { animation-delay: 360ms; }
+  .mask-opt:nth-child(3) .mask-art { animation-delay: 400ms; }
+  .mask-opt:nth-child(4) .mask-art { animation-delay: 440ms; }
 }
-@keyframes rise { from { transform: translateY(var(--rise, 18px)); } }
-@keyframes drop { from { transform: translateY(-24px); } }
-@keyframes hop { 40% { transform: translateY(-12px); } }
+@keyframes rise { from { transform: translateY(18px); } }
+@keyframes peek { from { transform: translateY(46px); } }
+@keyframes drop { from { transform: translateY(-26px); } }
+
+/* ---------- Narrower screens ---------- */
+@media (max-width: 1099px) {
+  .stage-grid { --hero-gap: 28px; }
+  .mask-tag { padding: 7px 8px; }
+}
+@media (max-width: 859px) {
+  .stage { padding-top: 112px; }
+  .awning { width: 128.2%; transform: scale(0.78); transform-origin: 0 0; }
+  .post { top: 80px; }
+  .stage-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; row-gap: 20px; }
+  .sign { grid-column: 1; grid-row: 1; margin-top: 18px; }
+  .sign::before, .sign::after { top: -22px; height: 22px; }
+  .stage-right { grid-column: 1; grid-row: 2; gap: 22px; }
+  .rack { margin-top: 0; }
+  .seller-wrap { --seller-w: clamp(150px, 40vw, 230px); }
+  html[data-mask='playful'] .seller-wrap, html[data-mask='focused'] .seller-wrap, html[data-mask='calm'] .seller-wrap { --seller-w: clamp(150px, 40vw, 230px); }
+  html[data-mask='playful'] .sign { rotate: 0deg; }
+  html[data-mask='calm'] .stage { padding-top: 112px; }
+}
+@media (max-width: 559px) {
+  .hero-sub { display: none; }
+  .mask-tag { padding: 6px 5px; border-radius: 9px; box-shadow: 0 2px 0 var(--line), inset 0 -3px 0 var(--accent); }
+  .mask-worn { font-size: 10px; padding: 1px 6px; }
+  .caption { font-size: 14px; margin-top: 12px; }
+  .sign { padding: 16px 18px 18px; }
+  .sign h1 { margin-bottom: 16px; }
+  .byline { margin-bottom: 12px; }
+  .hero-actions .btn-quiet { display: none; }
+  .stage-right { gap: 14px; }
+}

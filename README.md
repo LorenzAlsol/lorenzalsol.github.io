@@ -1,6 +1,6 @@
 # Folklore portfolio
 
-A single-page portfolio at the entrance to a folklore market. A mask seller offers four masks (Fox, Dragon, Owl, Stag); each mask changes how the site looks, moves and reads. Astro, TypeScript and GSAP. Static output, no backend.
+A single-page portfolio at the entrance to a folklore market. A mask seller offers four masks; each is a perspective (Playful, Cinematic, Focused, Calm) that presents the same portfolio differently. Astro, TypeScript and GSAP. Static output, no backend.
 
 ## Run it
 
@@ -14,9 +14,9 @@ npm run dev
 ## Make it yours
 
 - Personal content: `src/content/site.ts`. Every `[BRACKETED]` value is a placeholder.
-- Projects: `src/content/projects/*.json`, images in `src/assets`.
+- Projects: `src/content/projects/*.json` (summary, problem, users, contribution, decisions, links, stack, role, year), images in `src/assets`.
 - CV: add `public/cv.pdf`.
-- Seller and masks: flat SVG in `src/components/Stall.astro` and `src/components/MaskSprites.astro`. Replace with final art; keep the `.arm-*` pose groups.
+- Seller, rack and backdrops: flat SVG in `src/components/Stage.astro`; mask drawings in `src/components/MaskSprites.astro`. Replace with final art; keep the `.arm-*` pose groups. The creatures on the masks are provisional: UI and copy only say Playful, Cinematic, Focused, Calm.
 - Masks: names, copy and reveal timing in `src/content/masks.ts`; palettes, type, composition and motion per mask in `src/styles/tokens.css` (`data-mask` and `data-theme` on `<html>`).
 
 ## Publish

@@ -1,5 +1,5 @@
 /* Two independent axes on <html>:
-     data-mask  = fox | dragon | owl | stag   -> character: type, composition, motion, decoration
+     data-mask  = playful | cinematic | focused | calm   -> character: type, composition, motion, decoration
      data-theme = dark | light                -> surfaces and contrast
    Palettes are defined per mask x theme. Everything else per mask only. */
 
@@ -13,7 +13,7 @@
   --skin: #e6a574;
   --hair: #2a1a12;
 
-  /* Fallback palette (fox, dark) so nothing is unstyled before the attributes arrive */
+  /* Fallback palette (playful, dark) so nothing is unstyled before the attributes arrive */
   --bg: #22112c; --surface: #2f1a3b; --ink: #fff0e6; --muted: #dcc3d3; --rule: #5a3b6b;
   --accent: #ff7a45; --accent-ink: #2a0f10; --accent-text: #ff9a6e; --accent2: #ffc857;
   --line: #120a18;
@@ -21,50 +21,50 @@
 }
 
 /* ---------- Palettes ---------- */
-html[data-mask='fox'][data-theme='dark'] {
+html[data-theme='dark'] [data-mask='playful'], html[data-mask='playful'][data-theme='dark'] {
   --bg: #22112c; --surface: #2f1a3b; --ink: #fff0e6; --muted: #dcc3d3; --rule: #5a3b6b;
   --accent: #ff7a45; --accent-ink: #2a0f10; --accent-text: #ff9a6e; --accent2: #ffc857;
   --line: #120a18; --scene-sky: #3a2150; --scene-far: #4b2c63; --scene-near: #5e3a78;
 }
-html[data-mask='fox'][data-theme='light'] {
+html[data-theme='light'] [data-mask='playful'], html[data-mask='playful'][data-theme='light'] {
   --bg: #fdeff3; --surface: #ffffff; --ink: #2b1233; --muted: #6b4a66; --rule: #e6c9d6;
   --accent: #c93d12; --accent-ink: #ffffff; --accent-text: #bf3a10; --accent2: #f3a712;
   --line: #2b1233; --scene-sky: #ffd9c8; --scene-far: #ffc3b0; --scene-near: #ffab97;
 }
-html[data-mask='dragon'][data-theme='dark'] {
+html[data-theme='dark'] [data-mask='cinematic'], html[data-mask='cinematic'][data-theme='dark'] {
   --bg: #061418; --surface: #0c2228; --ink: #e8f4f1; --muted: #9dbdb8; --rule: #1f4850;
   --accent: #ff4b33; --accent-ink: #1a0502; --accent-text: #ff7a66; --accent2: #2ed3a1;
   --line: #020a0c; --scene-sky: #0d2a31; --scene-far: #123a43; --scene-near: #184a55;
 }
-html[data-mask='dragon'][data-theme='light'] {
+html[data-theme='light'] [data-mask='cinematic'], html[data-mask='cinematic'][data-theme='light'] {
   --bg: #e3efec; --surface: #f7fbfa; --ink: #07191d; --muted: #3f5f5a; --rule: #b6d0ca;
   --accent: #c8301b; --accent-ink: #ffffff; --accent-text: #b02612; --accent2: #0f8a68;
   --line: #07191d; --scene-sky: #bfe0d9; --scene-far: #9fd0c5; --scene-near: #82bfb1;
 }
-html[data-mask='owl'][data-theme='dark'] {
+html[data-theme='dark'] [data-mask='focused'], html[data-mask='focused'][data-theme='dark'] {
   --bg: #0e1426; --surface: #151c33; --ink: #edf0fa; --muted: #a3abc6; --rule: #2b3556;
   --accent: #f2b138; --accent-ink: #1a1203; --accent-text: #f2b138; --accent2: #7c8dff;
   --line: #070a16; --scene-sky: #1b2547; --scene-far: #243060; --scene-near: #2d3b74;
 }
-html[data-mask='owl'][data-theme='light'] {
+html[data-theme='light'] [data-mask='focused'], html[data-mask='focused'][data-theme='light'] {
   --bg: #f2f4fa; --surface: #ffffff; --ink: #101730; --muted: #4a5372; --rule: #cfd5e6;
   --accent: #ab6200; --accent-ink: #ffffff; --accent-text: #8a5300; --accent2: #3f52d9;
   --line: #101730; --scene-sky: #dce2f5; --scene-far: #c6cfee; --scene-near: #b0bce6;
 }
-html[data-mask='stag'][data-theme='dark'] {
+html[data-theme='dark'] [data-mask='calm'], html[data-mask='calm'][data-theme='dark'] {
   --bg: #0d1917; --surface: #12231f; --ink: #e9f0e8; --muted: #a8bdb2; --rule: #27413a;
   --accent: #9cc9a8; --accent-ink: #0c1a13; --accent-text: #9cc9a8; --accent2: #e0d2b4;
   --line: #060d0b; --scene-sky: #17302a; --scene-far: #1e3f37; --scene-near: #274f45;
 }
-html[data-mask='stag'][data-theme='light'] {
+html[data-theme='light'] [data-mask='calm'], html[data-mask='calm'][data-theme='light'] {
   --bg: #e6eee9; --surface: #fbfdfb; --ink: #14281f; --muted: #36554a; --rule: #c3d4ca;
   --accent: #2f6b4f; --accent-ink: #ffffff; --accent-text: #2f6b4f; --accent2: #8e7b52;
   --line: #14281f; --scene-sky: #d1e2d8; --scene-far: #bcd3c6; --scene-near: #a7c4b4;
 }
 
 /* ---------- Character: type, composition, motion (per mask) ---------- */
-/* fox: playful, expressive */
-html[data-mask='fox'], :root {
+/* playful: expressive */
+[data-mask='playful'], :root {
   --d-wght: 720; --d-soft: 100; --d-track: -0.02em; --d-lead: 0.98; --d-case: none;
   --h1-size: clamp(36px, 4.4vw, 76px);
   --text-size: 18px;
@@ -74,8 +74,8 @@ html[data-mask='fox'], :root {
   --vt-ease: cubic-bezier(0.34, 1.2, 0.5, 1);
   --tilt: -1.6deg;
 }
-/* dragon: energetic, cinematic */
-html[data-mask='dragon'] {
+/* cinematic: energetic */
+[data-mask='cinematic'] {
   --d-wght: 840; --d-soft: 0; --d-track: -0.035em; --d-lead: 0.92; --d-case: uppercase;
   --h1-size: clamp(32px, 4.1vw, 70px);
   --text-size: 18px;
@@ -85,8 +85,8 @@ html[data-mask='dragon'] {
   --vt-ease: cubic-bezier(0.7, 0, 0.2, 1);
   --tilt: 0deg;
 }
-/* owl: professional, focused */
-html[data-mask='owl'] {
+/* focused: professional */
+[data-mask='focused'] {
   --d-wght: 470; --d-soft: 0; --d-track: -0.015em; --d-lead: 1.04; --d-case: none;
   --h1-size: clamp(34px, 4.4vw, 70px);
   --text-size: 17px;
@@ -96,8 +96,8 @@ html[data-mask='owl'] {
   --vt-ease: cubic-bezier(0.2, 0, 0, 1);
   --tilt: 0deg;
 }
-/* stag: calm, atmospheric */
-html[data-mask='stag'] {
+/* calm: atmospheric */
+[data-mask='calm'] {
   --d-wght: 320; --d-soft: 60; --d-track: -0.01em; --d-lead: 1.08; --d-case: none;
   --h1-size: clamp(36px, 4.6vw, 76px);
   --text-size: 19px;
