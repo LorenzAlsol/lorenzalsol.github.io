@@ -1,11 +1,11 @@
 {
   "title": "[Project title 2]",
   "year": "[YR]",
-  "stack": ["[Stack]"],
+  "stack": [
+    "[Stack]"
+  ],
   "role": "[Your role]",
   "summary": "[One sentence about this web app.]",
-  "image": "../../assets/placeholder-tale.png",
-  "imageAlt": "[Screenshot of project 2]",
   "link": "#",
   "order": 2
 }

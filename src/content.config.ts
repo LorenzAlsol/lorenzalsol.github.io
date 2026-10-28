@@ -10,8 +10,9 @@ const projects = defineCollection({
     stack: z.array(z.string()),
     role: z.string(),
     summary: z.string(),
-    image: image(),
-    imageAlt: z.string(),
+    // Optional on purpose: a missing screenshot shows a labelled slot, never a fake one.
+    image: image().optional(),
+    imageAlt: z.string().optional(),
     link: z.string(),
     order: z.number(),
   }),

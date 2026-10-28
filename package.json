@@ -10,15 +10,10 @@
     "deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {
-    "@fontsource/alegreya": "^5.3.0",
-    "@fontsource/alegreya-sc": "^5.3.0",
-    "@fontsource/almendra": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
     "astro": "^7.4.2",
     "gsap": "^3.15.0",
-    "three": "^0.186.1",
     "typescript": "^7.0.2"
-  },
-  "devDependencies": {
-    "@types/three": "^0.186.0"
   }
 }

@@ -1,58 +1,113 @@
+/* Two independent axes on <html>:
+     data-mask  = fox | dragon | owl | stag   -> character: type, composition, motion, decoration
+     data-theme = dark | light                -> surfaces and contrast
+   Palettes are defined per mask x theme. Everything else per mask only. */
+
 :root {
-  --font-display: 'Almendra', Georgia, serif;
-  --font-body: 'Alegreya', Georgia, serif;
-  --font-label: 'Alegreya SC', Georgia, serif;
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-text: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --gutter: clamp(20px, 4.5vw, 64px);
+  --nav-h: 68px;
 
-  --size-hero: clamp(72px, 11vw, 160px);
-  --size-chapter: clamp(64px, 9.4vw, 132px);
-  --size-body: 24px;
-  --size-label: 17px;
-  --label-tracking: 0.16em;
+  /* Seller: flat colours that never change with mask or theme */
+  --skin: #e6a574;
+  --hair: #2a1a12;
 
-  --theme-fade: 400ms;
-
-  /* Dusk (default) */
-  --bg: #0d1917;
-  --bg2: #12231f;
-  --page: #1b312c;
-  --ink: #e9f0e8;
-  --muted: #a8bdb2;
-  --gold: #f2b44b;
-  --button: #f2b44b;
-  --button-ink: #1c1405;
-  --sky-1: #0a1220;
-  --sky-2: #14283a;
-  --sky-3: #1f4a48;
-  --orb: #f6efd2;
-  --orb-glow: rgba(246, 239, 210, 0.45);
-  --firefly: #f2b44b;
-  --gold-ink: #1c1405;
-  --gold-strong: #f2b44b; /* gold text on the hero sky */
-  --star: #e9f0e8;
-  --spine: rgb(0 0 0 / 0.24); /* shadow where the two pages meet */
-
-  /* Contact is always deep night */
-  --night-bg: #0d1917;
-  --night-ink: #e9f0e8;
-  --night-gold: #f2b44b;
+  /* Fallback palette (fox, dark) so nothing is unstyled before the attributes arrive */
+  --bg: #22112c; --surface: #2f1a3b; --ink: #fff0e6; --muted: #dcc3d3; --rule: #5a3b6b;
+  --accent: #ff7a45; --accent-ink: #2a0f10; --accent-text: #ff9a6e; --accent2: #ffc857;
+  --line: #120a18;
+  --scene-sky: #3a2150; --scene-far: #4b2c63; --scene-near: #5e3a78;
 }
 
-:root[data-theme='light'] {
-  --bg: #e6eee9;
-  --bg2: #d6e4dc;
-  --page: #fbfdfb;
-  --ink: #14281f;
-  --muted: #36554a;
-  --gold: #8e5a12;
-  --button: #8e2a47;
-  --button-ink: #ffffff;
-  --sky-1: #bfd9e6;
-  --sky-2: #e9e4d4;
-  --sky-3: #f6d9b8;
-  --orb: #ffe2a0;
-  --orb-glow: rgba(255, 214, 140, 0.6);
-  --firefly: #8e5a12;
-  --gold-ink: #ffffff;
-  --gold-strong: #704509; /* Dawn: plain gold is under 4.5:1 on the sky */
-  --spine: rgb(70 45 10 / 0.12);
+/* ---------- Palettes ---------- */
+html[data-mask='fox'][data-theme='dark'] {
+  --bg: #22112c; --surface: #2f1a3b; --ink: #fff0e6; --muted: #dcc3d3; --rule: #5a3b6b;
+  --accent: #ff7a45; --accent-ink: #2a0f10; --accent-text: #ff9a6e; --accent2: #ffc857;
+  --line: #120a18; --scene-sky: #3a2150; --scene-far: #4b2c63; --scene-near: #5e3a78;
+}
+html[data-mask='fox'][data-theme='light'] {
+  --bg: #fdeff3; --surface: #ffffff; --ink: #2b1233; --muted: #6b4a66; --rule: #e6c9d6;
+  --accent: #c93d12; --accent-ink: #ffffff; --accent-text: #bf3a10; --accent2: #f3a712;
+  --line: #2b1233; --scene-sky: #ffd9c8; --scene-far: #ffc3b0; --scene-near: #ffab97;
+}
+html[data-mask='dragon'][data-theme='dark'] {
+  --bg: #061418; --surface: #0c2228; --ink: #e8f4f1; --muted: #9dbdb8; --rule: #1f4850;
+  --accent: #ff4b33; --accent-ink: #1a0502; --accent-text: #ff7a66; --accent2: #2ed3a1;
+  --line: #020a0c; --scene-sky: #0d2a31; --scene-far: #123a43; --scene-near: #184a55;
+}
+html[data-mask='dragon'][data-theme='light'] {
+  --bg: #e3efec; --surface: #f7fbfa; --ink: #07191d; --muted: #3f5f5a; --rule: #b6d0ca;
+  --accent: #c8301b; --accent-ink: #ffffff; --accent-text: #b02612; --accent2: #0f8a68;
+  --line: #07191d; --scene-sky: #bfe0d9; --scene-far: #9fd0c5; --scene-near: #82bfb1;
+}
+html[data-mask='owl'][data-theme='dark'] {
+  --bg: #0e1426; --surface: #151c33; --ink: #edf0fa; --muted: #a3abc6; --rule: #2b3556;
+  --accent: #f2b138; --accent-ink: #1a1203; --accent-text: #f2b138; --accent2: #7c8dff;
+  --line: #070a16; --scene-sky: #1b2547; --scene-far: #243060; --scene-near: #2d3b74;
+}
+html[data-mask='owl'][data-theme='light'] {
+  --bg: #f2f4fa; --surface: #ffffff; --ink: #101730; --muted: #4a5372; --rule: #cfd5e6;
+  --accent: #ab6200; --accent-ink: #ffffff; --accent-text: #8a5300; --accent2: #3f52d9;
+  --line: #101730; --scene-sky: #dce2f5; --scene-far: #c6cfee; --scene-near: #b0bce6;
+}
+html[data-mask='stag'][data-theme='dark'] {
+  --bg: #0d1917; --surface: #12231f; --ink: #e9f0e8; --muted: #a8bdb2; --rule: #27413a;
+  --accent: #9cc9a8; --accent-ink: #0c1a13; --accent-text: #9cc9a8; --accent2: #e0d2b4;
+  --line: #060d0b; --scene-sky: #17302a; --scene-far: #1e3f37; --scene-near: #274f45;
+}
+html[data-mask='stag'][data-theme='light'] {
+  --bg: #e6eee9; --surface: #fbfdfb; --ink: #14281f; --muted: #36554a; --rule: #c3d4ca;
+  --accent: #2f6b4f; --accent-ink: #ffffff; --accent-text: #2f6b4f; --accent2: #8e7b52;
+  --line: #14281f; --scene-sky: #d1e2d8; --scene-far: #bcd3c6; --scene-near: #a7c4b4;
+}
+
+/* ---------- Character: type, composition, motion (per mask) ---------- */
+/* fox: playful, expressive */
+html[data-mask='fox'], :root {
+  --d-wght: 720; --d-soft: 100; --d-track: -0.02em; --d-lead: 0.98; --d-case: none;
+  --h1-size: clamp(36px, 4.4vw, 76px);
+  --text-size: 18px;
+  --hero-cols: minmax(0, 1fr) minmax(0, 1.12fr); --hero-gap: clamp(28px, 4vw, 72px);
+  --section-pad: clamp(72px, 9vw, 136px);
+  --ease: cubic-bezier(0.34, 1.56, 0.64, 1); --dur: 260ms; --lift: -6px; --press: 0.95;
+  --vt-ease: cubic-bezier(0.34, 1.2, 0.5, 1);
+  --tilt: -1.6deg;
+}
+/* dragon: energetic, cinematic */
+html[data-mask='dragon'] {
+  --d-wght: 840; --d-soft: 0; --d-track: -0.035em; --d-lead: 0.92; --d-case: uppercase;
+  --h1-size: clamp(32px, 4.1vw, 70px);
+  --text-size: 18px;
+  --hero-cols: minmax(0, 1fr) minmax(0, 1fr); --hero-gap: clamp(20px, 3vw, 48px);
+  --section-pad: clamp(72px, 9vw, 136px);
+  --ease: cubic-bezier(0.7, 0, 0.2, 1); --dur: 180ms; --lift: -2px; --press: 0.97;
+  --vt-ease: cubic-bezier(0.7, 0, 0.2, 1);
+  --tilt: 0deg;
+}
+/* owl: professional, focused */
+html[data-mask='owl'] {
+  --d-wght: 470; --d-soft: 0; --d-track: -0.015em; --d-lead: 1.04; --d-case: none;
+  --h1-size: clamp(34px, 4.4vw, 70px);
+  --text-size: 17px;
+  --hero-cols: minmax(0, 1.2fr) minmax(0, 0.8fr); --hero-gap: clamp(28px, 4vw, 64px);
+  --section-pad: clamp(56px, 7vw, 104px);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --dur: 140ms; --lift: -1px; --press: 0.98;
+  --vt-ease: cubic-bezier(0.2, 0, 0, 1);
+  --tilt: 0deg;
+}
+/* stag: calm, atmospheric */
+html[data-mask='stag'] {
+  --d-wght: 320; --d-soft: 60; --d-track: -0.01em; --d-lead: 1.08; --d-case: none;
+  --h1-size: clamp(36px, 4.6vw, 76px);
+  --text-size: 19px;
+  --hero-cols: minmax(0, 1fr) minmax(0, 0.9fr); --hero-gap: clamp(36px, 6vw, 112px);
+  --section-pad: clamp(88px, 12vw, 176px);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1); --dur: 420ms; --lift: -3px; --press: 0.985;
+  --vt-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --tilt: 0deg;
+}
+
+@media (max-width: 859px) {
+  :root { --nav-h: 60px; }
 }

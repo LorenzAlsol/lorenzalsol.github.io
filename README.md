@@ -1,6 +1,6 @@
 # Folklore portfolio
 
-A single-page portfolio told as a short story. Astro, TypeScript, GSAP and Three.js. Static output, no backend.
+A single-page portfolio at the entrance to a folklore market. A mask seller offers four masks (Fox, Dragon, Owl, Stag); each mask changes how the site looks, moves and reads. Astro, TypeScript and GSAP. Static output, no backend.
 
 ## Run it
 
@@ -16,7 +16,8 @@ npm run dev
 - Personal content: `src/content/site.ts`. Every `[BRACKETED]` value is a placeholder.
 - Projects: `src/content/projects/*.json`, images in `src/assets`.
 - CV: add `public/cv.pdf`.
-- Mascot: `src/mascot/avatar.ts`.
+- Seller and masks: flat SVG in `src/components/Stall.astro` and `src/components/MaskSprites.astro`. Replace with final art; keep the `.arm-*` pose groups.
+- Masks: names, copy and reveal timing in `src/content/masks.ts`; palettes, type, composition and motion per mask in `src/styles/tokens.css` (`data-mask` and `data-theme` on `<html>`).
 
 ## Publish
 

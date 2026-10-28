@@ -1,12 +1,10 @@
 // All personal content lives here. Replace every [BRACKETED] value.
-import portrait from '../assets/placeholder-portrait.png'; // swap for your own portrait
-
+// Nothing below is real: no roles, results or contact details have been invented.
 export const site = {
   name: '[YOUR NAME]',
   initials: '[YN]',
   city: '[CITY]',
   year: '[YEAR]',
-  mascotName: '[MASCOT NAME]',
   title: '[YOUR NAME], web app developer',
   description: '[One-sentence description for search and sharing.]',
   email: '[you@email.com]',
@@ -14,28 +12,27 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/[username]',
   cv: '/cv.pdf',
   nav: [
-    { label: 'Start', href: '#start' },
-    { label: 'Tales', href: '#tales' },
-    { label: 'The teller', href: '#teller' },
-    { label: 'Send a raven', href: '#raven' },
+    { label: 'Work', href: '#work' },
+    { label: 'About', href: '#about' },
+    { label: 'Contact', href: '#contact' },
   ],
   hero: {
-    eyebrow: 'Once upon a time',
-    hint: 'Drag to turn it. Click a face.',
-    tagline: 'I build web apps you can step into, poke at and play with.',
+    role: 'Web app developer',
+    // Deliberate line breaks; each entry is one line of the headline.
+    headline: ['I build web apps', 'you can step into,', 'poke at and', 'play with.'],
+    mechanic: 'Four masks, one portfolio. Each mask changes how this site looks, moves and reads.',
+    primary: 'See the work',
+    secondary: 'Choose a mask',
   },
-  lantern: [
-    { label: 'Tales', href: '#tales' },
-    { label: 'Teller', href: '#teller' },
-    { label: 'CV', href: '/cv.pdf', download: true },
-    { label: 'Raven', href: '#raven' },
-  ],
-  tales: { eyebrow: 'Chapter one', title: 'Tales', intro: '[One line about selected work.]' },
-  teller: {
-    eyebrow: 'Chapter two',
-    title: 'The teller',
-    portrait,
-    portraitAlt: '[Portrait of YOUR NAME]',
+  work: {
+    kicker: 'Selected work',
+    title: 'Work',
+    intro: '[One line about selected work.]',
+    cta: 'View project',
+  },
+  about: {
+    kicker: 'About',
+    title: 'The person behind the stall',
     bio: ['[Short bio, paragraph one.]', '[Short bio, paragraph two.]'],
     facts: [
       { label: 'Off the clock', value: '[Your answer]' },
@@ -43,15 +40,9 @@ export const site = {
       { label: 'Next up', value: '[Your answer]' },
     ],
   },
-  raven: {
-    eyebrow: 'Epilogue',
-    title: 'Send a raven',
+  contact: {
+    kicker: 'Contact',
+    title: 'Say hello',
     line: '[One line on what you are open to.]',
-  },
-  mascot: {
-    start: ['Welcome. I\'m [MASCOT NAME], and I\'ll guide you through.', 'Drag the lantern to turn it. Each face opens a chapter.'],
-    tales: ['These are [YOUR NAME]\'s web apps, told as short tales.', 'Each tale opens a full case study.'],
-    teller: ['Here is the teller behind the tales.', 'Three small facts sit at the bottom.'],
-    raven: ['The last page. The gold button is the email.', 'The CV is the third button.'],
   },
 };

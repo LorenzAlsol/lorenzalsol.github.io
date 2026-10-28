@@ -1,20 +1,21 @@
 ---
 import { site } from '../content/site';
+import { DEFAULT_MASK, maskIds } from '../content/masks';
 import '../styles/global.css';
-import almendraUrl from '@fontsource/almendra/files/almendra-latin-700-normal.woff2?url';
+import displayFont from '@fontsource-variable/fraunces/files/fraunces-latin-soft-normal.woff2?url';
 
 // Set `site` in astro.config.mjs to get absolute Open Graph URLs.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 const ogImage = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
 ---
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-mask={DEFAULT_MASK}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{site.title}</title>
     <meta name="description" content={site.description} />
-    <meta name="theme-color" content="#0d1917" />
+    <meta name="theme-color" content="#22112c" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {canonical && <link rel="canonical" href={canonical} />}
     <meta property="og:type" content="website" />
@@ -26,31 +27,29 @@ const ogImage = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={site.title} />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preload" href={almendraUrl} as="font" type="font/woff2" crossorigin />
-    <script is:inline>
+    <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
+    <!-- Set mask and theme before first paint. A ?mask=owl link is honoured; then the saved choice. -->
+    <script is:inline define:vars={{ ids: maskIds, fallback: DEFAULT_MASK }}>
       (function () {
-        var t;
-        try { t = localStorage.getItem('theme'); } catch (e) {}
-        if (t !== 'light' && t !== 'dark') {
-          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        }
-        document.documentElement.setAttribute('data-theme', t);
-        // Pre-hide reveal targets only when motion is allowed. If the motion script never
-        // loads, a timer shows everything.
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          document.documentElement.classList.add('js-motion');
-          window.__mt = setTimeout(function () { document.documentElement.classList.add('motion-timeout'); }, 4000);
-        }
+        var r = document.documentElement, mask, theme;
+        try {
+          mask = new URLSearchParams(location.search).get('mask') || localStorage.getItem('mask');
+          theme = localStorage.getItem('theme');
+        } catch (e) {}
+        if (ids.indexOf(mask) < 0) mask = fallback;
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        r.setAttribute('data-mask', mask);
+        r.setAttribute('data-theme', theme);
       })();
     </script>
   </head>
   <body>
-    <a href="#main">Skip to content</a>
+    <a class="skip" href="#main">Skip to content</a>
     <slot />
     <script>
-      import '../scripts/theme';
+      import '../scripts/appearance';
       import '../scripts/nav';
-      import '../scripts/motion';
+      import '../scripts/work';
     </script>
   </body>
 </html>
