@@ -28,6 +28,8 @@
   --firefly: #f2b44b;
   --gold-ink: #1c1405;
   --gold-strong: #f2b44b; /* gold text on the hero sky */
+  --star: #e9f0e8;
+  --spine: rgb(0 0 0 / 0.24); /* shadow where the two pages meet */
 
   /* Contact is always deep night */
   --night-bg: #0d1917;
@@ -52,4 +54,5 @@
   --firefly: #8e5a12;
   --gold-ink: #ffffff;
   --gold-strong: #704509; /* Dawn: plain gold is under 4.5:1 on the sky */
+  --spine: rgb(70 45 10 / 0.12);
 }

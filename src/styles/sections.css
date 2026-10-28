@@ -288,3 +288,75 @@ picture { display: contents; }
 /* Focus rings that stay visible on every background */
 .chapter-raven :focus-visible, .site-footer :focus-visible { outline-color: var(--night-gold); }
 .mascot-avatar:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 9px var(--page); }
+
+/* ---------- Enhancements: light, depth, and the book ---------- */
+::selection { background: var(--gold); color: var(--gold-ink); }
+p { text-wrap: pretty; }
+
+/* Hero: a second, hazier tree line and a Dusk-only star field */
+.stars { position: absolute; inset: 0; z-index: -1; pointer-events: none; fill: var(--star); transition: opacity var(--theme-fade) ease; }
+.hero .stars { bottom: 38%; }
+:root[data-theme='light'] .hero .stars { opacity: 0; }
+.forest-far { z-index: 0; height: clamp(130px, 16vw, 210px); fill: color-mix(in srgb, var(--bg) 42%, var(--sky-3)); opacity: 0.9; }
+.forest:not(.forest-far) { z-index: 1; }
+/* The name is lit once as the page opens. A gradient layer fades by opacity, which the
+   compositor handles; animating text-shadow repainted the headline every frame. */
+.hero-name { position: relative; isolation: isolate; }
+.hero-name::before {
+  content: ''; position: absolute; inset: -25% -6%; z-index: -1; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, var(--orb-glow), transparent 78%);
+}
+@keyframes lit { from { opacity: 1; } to { opacity: 0; } }
+
+/* Book spreads: paper, a shadow at the spine, a keyline inside each frame */
+.spread::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode: overlay; opacity: 0.07;
+}
+.page { position: relative; z-index: 1; }
+.page-left { background: linear-gradient(to right, transparent 80%, var(--spine)); }
+.page-right { background: linear-gradient(to left, transparent 80%, var(--spine)); }
+.frame { position: relative; }
+.frame::after {
+  content: ''; position: absolute; inset: 5px; pointer-events: none; border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+}
+@media (max-width: 800px) { .page-left, .page-right { background: none; } }
+
+/* The teller: the section rises from the forest floor as a soft hill */
+.chapter-teller { position: relative; }
+.chapter-teller::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; z-index: 0; pointer-events: none;
+  height: clamp(32px, 5vw, 64px); transform: translateY(-99%);
+  background: var(--bg2); clip-path: ellipse(58% 100% at 50% 100%);
+}
+.fact dt::before {
+  content: ''; display: inline-block; width: 7px; height: 7px; margin-right: 0.7em;
+  background: currentColor; transform: rotate(45deg); vertical-align: 0.12em;
+}
+
+/* Contact: moon, stars and the raven */
+.chapter-raven { position: relative; overflow: hidden; isolation: isolate; }
+.night-sky { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.night-sky .stars { z-index: 0; }
+.moon {
+  position: absolute; right: 13%; top: 8%; width: clamp(48px, 6vw, 84px); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 38% 36%, #fff, #f6efd2 65%);
+  box-shadow: 0 0 40px 10px rgba(246, 239, 210, 0.3), 0 0 110px 30px rgba(246, 239, 210, 0.12);
+}
+.raven { position: absolute; right: calc(13% - 14px); top: calc(8% + 6px); width: clamp(72px, 9vw, 120px); height: auto; color: #050d0c; }
+@media (max-width: 599px) { .moon { right: 6%; top: 3%; } .raven { right: calc(6% - 10px); top: calc(3% + 4px); } }
+
+/* Pressable things feel pressed */
+.btn, .pill, .mascot-btn, .nav-link, #theme-toggle { cursor: pointer; }
+.btn, .pill, .mascot-btn { transition: background-color 0.2s ease, border-color 0.2s ease, filter 0.2s ease, transform 0.15s ease; }
+.btn:active, .pill:active, .mascot-btn:active, #theme-toggle:active { transform: scale(0.97); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-name::before { animation: lit 2.6s ease-out 0.15s both; }
+  .btn:hover, .pill:hover { transform: translateY(-1px); }
+  .spread:hover .ribbon, .spread:focus-within .ribbon { transform-origin: 50% 0; animation: sway 1.4s ease-in-out; }
+  .mascot-bubble { animation: bubble-in 0.22s ease-out; }
+}
+@keyframes sway { 25% { transform: rotate(3deg); } 60% { transform: rotate(-2deg); } 100% { transform: rotate(0); } }
+@keyframes bubble-in { from { opacity: 0; transform: translateY(6px); } }

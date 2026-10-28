@@ -186,6 +186,8 @@ export async function createLantern(opts: LanternOptions) {
       if (!hover && !focused) yaw += IDLE_SPEED * dt;
     }
     cube.rotation.set(pitch, yaw, 0);
+    // Soft flame flicker in the halo.
+    glow.material.opacity = 0.68 + 0.05 * Math.sin(now * 0.0017) + 0.025 * Math.sin(now * 0.0043);
     renderer.render(scene, camera);
   }
 

@@ -51,9 +51,27 @@ async function start() {
       const scrub = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
       const orb = hero.querySelector('.orb');
       if (orb) gsap.to(orb, { y: () => hero.offsetHeight * 0.35, ease: 'none', scrollTrigger: scrub });
+      // The far tree line lags the near one, which gives the forest depth.
+      const far = hero.querySelector('.forest-far');
+      if (far) gsap.to(far, { y: () => hero.offsetHeight * 0.06, ease: 'none', scrollTrigger: scrub });
       hero.querySelectorAll('.firefly').forEach((f, i) => {
         gsap.to(f, { y: (i % 2 ? -1 : 1) * (50 + i * 28), ease: 'none', scrollTrigger: scrub });
       });
+    }
+
+    // The raven crosses the contact sky once, then rests near the moon.
+    const night = document.querySelector<HTMLElement>('.chapter-raven');
+    const raven = night?.querySelector<SVGElement>('.raven');
+    if (night && raven) {
+      const wingL = raven.querySelector('.wing-l');
+      const wingR = raven.querySelector('.wing-r');
+      gsap.set(wingL, { svgOrigin: '56 34' });
+      gsap.set(wingR, { svgOrigin: '66 32' });
+      gsap.timeline({ scrollTrigger: { trigger: night, start: 'top 55%', once: true } })
+        .fromTo(raven, { x: () => -night.clientWidth * 0.95, y: 50, rotation: -6 }, { x: 0, y: 0, rotation: 0, duration: 7, ease: 'power2.out' }, 0)
+        .fromTo(wingL, { rotation: -16 }, { rotation: 12, duration: 0.5, repeat: 13, yoyo: true, ease: 'sine.inOut' }, 0)
+        .fromTo(wingR, { rotation: 16 }, { rotation: -12, duration: 0.5, repeat: 13, yoyo: true, ease: 'sine.inOut' }, 0)
+        .to([wingL, wingR], { rotation: 0, duration: 0.8, ease: 'sine.out' }, 7.2);
     }
   });
 }
