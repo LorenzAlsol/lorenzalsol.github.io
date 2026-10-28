@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" width="420" height="420">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f2b44b" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#f2b44b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pane" cx="50%" cy="50%" r="75%">
+      <stop offset="0" stop-color="#ffd88a"/>
+      <stop offset=".6" stop-color="#c98a2c"/>
+      <stop offset="1" stop-color="#6a4410"/>
+    </radialGradient>
+  </defs>
+  <circle cx="210" cy="210" r="205" fill="url(#glow)"/>
+  <polygon points="80,135 210,210 210,360 80,285" fill="url(#pane)"/>
+  <polygon points="210,210 340,135 340,285 210,360" fill="url(#pane)" opacity=".85"/>
+  <polygon points="210,60 340,135 210,210 80,135" fill="url(#pane)"/>
+  <g font-family="Georgia, serif" font-weight="700" fill="#2a1a05" text-anchor="middle">
+    <text transform="matrix(1.3 -0.75 1.3 0.75 80 135)" x="50" y="58" font-size="26">[YN]</text>
+    <text transform="matrix(1.3 0.75 0 1.5 80 135)" x="50" y="58" font-size="22">Tales</text>
+    <text transform="matrix(1.3 -0.75 0 1.5 210 210)" x="50" y="58" font-size="22">Teller</text>
+  </g>
+  <g fill="none" stroke="#f2b44b" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+    <polygon points="210,60 340,135 340,285 210,360 80,285 80,135"/>
+    <polyline points="80,135 210,210 340,135"/>
+    <line x1="210" y1="210" x2="210" y2="360"/>
+  </g>
+</svg>

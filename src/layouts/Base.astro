@@ -1,0 +1,56 @@
+---
+import { site } from '../content/site';
+import '../styles/global.css';
+import almendraUrl from '@fontsource/almendra/files/almendra-latin-700-normal.woff2?url';
+
+// Set `site` in astro.config.mjs to get absolute Open Graph URLs.
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const ogImage = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.title}</title>
+    <meta name="description" content={site.description} />
+    <meta name="theme-color" content="#0d1917" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={site.title} />
+    <meta property="og:description" content={site.description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={site.title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" href={almendraUrl} as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      (function () {
+        var t;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+        // Pre-hide reveal targets only when motion is allowed. If the motion script never
+        // loads, a timer shows everything.
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('js-motion');
+          window.__mt = setTimeout(function () { document.documentElement.classList.add('motion-timeout'); }, 4000);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main">Skip to content</a>
+    <slot />
+    <script>
+      import '../scripts/theme';
+      import '../scripts/nav';
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

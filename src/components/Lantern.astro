@@ -1,0 +1,25 @@
+---
+import { site } from '../content/site';
+---
+<div
+  id="lantern"
+  class="lantern"
+  data-lantern
+  data-initials={site.initials}
+  data-labels={JSON.stringify(site.lantern.map((f) => f.label))}
+>
+  <div class="lantern-stage" data-stage>
+    <img class="lantern-fallback" src="/images/lantern.svg" alt="" width="420" height="420" decoding="async" />
+  </div>
+  <ul class="lantern-links" aria-label="Lantern faces">
+    {site.lantern.map((face, i) => (
+      <li>
+        <a class="label pill" data-face={i} href={face.href} download={face.download ? '' : undefined}>{face.label}</a>
+      </li>
+    ))}
+  </ul>
+  <p class="hint"><em>{site.hero.hint}</em></p>
+</div>
+<script>
+  import '../scripts/lantern';
+</script>

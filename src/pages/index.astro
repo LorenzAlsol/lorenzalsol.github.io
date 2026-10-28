@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Flourish from '../components/Flourish.astro';
+import Lantern from '../components/Lantern.astro';
+import Mascot from '../components/Mascot.astro';
+import { site } from '../content/site';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+// Deterministic pine silhouette: same output every build.
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const W = 1440, H = 180;
+let d = `M0 ${H} L0 ${H - 30}`;
+for (let x = 0; x < W; ) {
+  const w = 34 + rnd() * 46;
+  const h = 50 + rnd() * 100;
+  const base = H - 30;
+  d += ` L${x.toFixed(0)} ${base} L${(x + w / 2).toFixed(0)} ${(base - h).toFixed(0)} L${(x + w).toFixed(0)} ${base}`;
+  x += w * (0.55 + rnd() * 0.3);
+}
+d += ` L${W} ${H - 30} L${W} ${H} Z`;
+
+const fireflies = [
+  { x: '12%', y: '38%' }, { x: '24%', y: '62%' }, { x: '71%', y: '30%' },
+  { x: '83%', y: '58%' }, { x: '47%', y: '22%' }, { x: '91%', y: '40%' },
+];
+---
+<Base>
+  <header class="site-header">
+    <a class="medallion" href="#start" aria-label={`${site.initials}, ${site.name}, back to start`}>{site.initials}</a>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        {site.nav.map((item) => (
+          <li><a class="label nav-link" href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <button type="button" id="theme-toggle">Dawn</button>
+  </header>
+
+  <main id="main">
+    <section id="start" class="hero" aria-labelledby="hero-title">
+      <div class="orb" aria-hidden="true"></div>
+      <div class="fireflies" aria-hidden="true">
+        {fireflies.map((f) => <span class="firefly" style={`left:${f.x};top:${f.y}`}></span>)}
+      </div>
+      <div class="hero-inner">
+        <p class="label eyebrow">{site.hero.eyebrow}</p>
+        <h1 id="hero-title" class="hero-name">{site.name}</h1>
+        <Flourish />
+        <Lantern />
+        <p class="tagline">{site.hero.tagline}</p>
+        <p class="hero-actions">
+          <a class="btn" href="#tales">Begin the tales</a>
+          <a class="btn btn-ghost" href="#raven">Send a raven</a>
+        </p>
+      </div>
+      <svg class="forest" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d={d} />
+      </svg>
+    </section>
+
+    <section id="tales" class="chapter chapter-tales" aria-labelledby="tales-title">
+      <header class="chapter-head" data-reveal>
+        <p class="label eyebrow">{site.tales.eyebrow}</p>
+        <h2 id="tales-title" class="chapter-title">{site.tales.title}</h2>
+        <Flourish />
+        <p class="chapter-intro">{site.tales.intro}</p>
+      </header>
+      <div class="spreads">
+        {projects.map((p) => (
+          <article class="spread" data-reveal>
+            <figure class="page page-left">
+              <div class="frame">
+                <Picture src={p.data.image} alt={p.data.imageAlt} formats={['avif', 'webp']} widths={[480, 720, 960, 1200]} sizes="(max-width: 800px) calc(100vw - 112px), 470px" loading="lazy" />
+              </div>
+            </figure>
+            <div class="page page-right">
+              <p class="label tale-kind">A web app</p>
+              <h3 class="tale-title">{p.data.title}</h3>
+              <p class="tale-summary">{p.data.summary}</p>
+              <ul class="tags" aria-label="Stack">
+                {p.data.stack.map((s) => <li class="tag label">{s}</li>)}
+                <li class="tag tag-role label">{p.data.role}</li>
+              </ul>
+              <p><a class="btn" href={p.data.link}>Read the tale<span class="sr-only">: {p.data.title}</span></a></p>
+              <p class="ribbon label"><time>{p.data.year}</time></p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="teller" class="chapter chapter-teller" aria-labelledby="teller-title">
+      <header class="chapter-head" data-reveal>
+        <p class="label eyebrow">{site.teller.eyebrow}</p>
+        <h2 id="teller-title" class="chapter-title">{site.teller.title}</h2>
+        <Flourish />
+      </header>
+      <div class="teller-grid">
+        <figure class="arch" data-reveal>
+          <Picture src={site.teller.portrait} alt={site.teller.portraitAlt} formats={['avif', 'webp']} widths={[360, 420, 840]} sizes="(max-width: 800px) 360px, 420px" loading="lazy" />
+        </figure>
+        <div class="bio" data-reveal>
+          {site.teller.bio.map((para) => <p>{para}</p>)}
+        </div>
+      </div>
+      <dl class="facts">
+        {site.teller.facts.map((f) => (
+          <div class="fact" data-reveal>
+            <dt class="label">{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section id="raven" class="chapter chapter-raven" aria-labelledby="raven-title">
+      <header class="chapter-head" data-reveal>
+        <p class="label eyebrow">{site.raven.eyebrow}</p>
+        <h2 id="raven-title" class="chapter-title">{site.raven.title}</h2>
+        <Flourish />
+        <p class="chapter-intro">{site.raven.line}</p>
+      </header>
+      <p class="mail-wrap" data-reveal><a class="btn btn-big" href={`mailto:${site.email}`}>{site.email}</a></p>
+      <ul class="elsewhere" data-reveal>
+        <li><a class="label pill" href={site.github}>GitHub</a></li>
+        <li><a class="label pill" href={site.linkedin}>LinkedIn</a></li>
+        <li><a class="label pill" href={site.cv} download>Download CV</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="label">&copy; {site.year} {site.name}</p>
+    <p class="the-end"><em>The end, for now.</em></p>
+    <p><a class="label pill" href="#start">Back to the start</a></p>
+  </footer>
+
+  <Mascot />
+</Base>

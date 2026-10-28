@@ -1,0 +1,55 @@
+:root {
+  --font-display: 'Almendra', Georgia, serif;
+  --font-body: 'Alegreya', Georgia, serif;
+  --font-label: 'Alegreya SC', Georgia, serif;
+
+  --size-hero: clamp(72px, 11vw, 160px);
+  --size-chapter: clamp(64px, 9.4vw, 132px);
+  --size-body: 24px;
+  --size-label: 17px;
+  --label-tracking: 0.16em;
+
+  --theme-fade: 400ms;
+
+  /* Dusk (default) */
+  --bg: #0d1917;
+  --bg2: #12231f;
+  --page: #1b312c;
+  --ink: #e9f0e8;
+  --muted: #a8bdb2;
+  --gold: #f2b44b;
+  --button: #f2b44b;
+  --button-ink: #1c1405;
+  --sky-1: #0a1220;
+  --sky-2: #14283a;
+  --sky-3: #1f4a48;
+  --orb: #f6efd2;
+  --orb-glow: rgba(246, 239, 210, 0.45);
+  --firefly: #f2b44b;
+  --gold-ink: #1c1405;
+  --gold-strong: #f2b44b; /* gold text on the hero sky */
+
+  /* Contact is always deep night */
+  --night-bg: #0d1917;
+  --night-ink: #e9f0e8;
+  --night-gold: #f2b44b;
+}
+
+:root[data-theme='light'] {
+  --bg: #e6eee9;
+  --bg2: #d6e4dc;
+  --page: #fbfdfb;
+  --ink: #14281f;
+  --muted: #36554a;
+  --gold: #8e5a12;
+  --button: #8e2a47;
+  --button-ink: #ffffff;
+  --sky-1: #bfd9e6;
+  --sky-2: #e9e4d4;
+  --sky-3: #f6d9b8;
+  --orb: #ffe2a0;
+  --orb-glow: rgba(255, 214, 140, 0.6);
+  --firefly: #8e5a12;
+  --gold-ink: #ffffff;
+  --gold-strong: #704509; /* Dawn: plain gold is under 4.5:1 on the sky */
+}
